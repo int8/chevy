@@ -1,8 +1,12 @@
 [tool.poetry]
 name = "chevy"
-version = "0.1.1"
+version = "0.1.2"
 description = "Chess position Evaluation via hand-crafted features"
 authors = ["int8"]
+readme = "README.md"
+repository = "https://github.com/int8/chevy"
+homepage = "https://github.com/int8/chevy"
+keywords = ["chess", "evaluation"]
 
 [tool.poetry.dependencies]
 python = ">=3.7,<3.11"
