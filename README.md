@@ -58,14 +58,14 @@ from chevy.features import BoardFeatures
 # https://lichess.org/editor/5kr1/4pp1p/1Q2q3/1PBP2p1/2P3P1/p7/4P3/1R2K1B1_w_-_-_0_19
 fen = "5kr1/4pp1p/1Q2q3/1PBP2p1/2P3P1/p7/4P3/1R2K1B1 w - - 0 19"
 board = chess.Board(fen)
-pawn_structure = BoardFeatures(board, color=chess.WHITE)
-print(f"{pawn_structure.bishop_pair=}")
-print(f"{pawn_structure.fianchetto_queen=}")
-print(f"{pawn_structure.fianchetto_king=}")
-print(f"{pawn_structure.queens_mobility=}")
-print(f"{pawn_structure.open_files_rooks_count=}")
-print(f"{pawn_structure.connected_rooks=}")
-print(f"{pawn_structure.connectivity=}")
+board_features = BoardFeatures(board, color=chess.WHITE)
+print(f"{board_features.bishop_pair=}")
+print(f"{board_features.fianchetto_queen=}")
+print(f"{board_features.fianchetto_king=}")
+print(f"{board_features.queens_mobility=}")
+print(f"{board_features.open_files_rooks_count=}")
+print(f"{board_features.connected_rooks=}")
+print(f"{board_features.connectivity=}")
 # + more 
 
 
