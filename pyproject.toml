@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "chevy"
+version = "0.1.0"
+description = "Chess position Evaluation via hand-crafted features"
+authors = ["int8"]
+
+[tool.poetry.dependencies]
+python = ">=3.7,<3.11"
+python-chess = "^1.999"
+numpy = "^1.22.3"
+scipy = "^1.8.0"
+msgpack = "^1.0.4"
+cachetools = "^5.2.0"
+
+[tool.poetry.dev-dependencies]
+notebook = "^6.4.11"
+matplotlib = "^3.5.2"
+pytest = "^6.1.2"
+mypy = "^0.961"
+types-cachetools = "^5.0.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
