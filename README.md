@@ -45,7 +45,6 @@ print(f"{pawn_structure.passed_pawns=}")
 print(f"{pawn_structure.isolated_pawns=}")
 print(f"{pawn_structure.blocked_pawns=}")
 print(f"{pawn_structure.central_pawns=}")
-print(f"{pawn_structure.central_pawns=}")
 
 
 ```
