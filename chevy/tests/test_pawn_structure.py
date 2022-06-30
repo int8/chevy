@@ -211,15 +211,18 @@ def test_pawns_advancements():
     fen = "r4rk1/2R4R/3P2B1/2Pb4/5P2/8/6PP/6K1 b - - 1 31"
     board = chess.Board(fen)
     pawn_structure = PawnStructure(board, color=chess.WHITE)
-    assert pawn_structure.pawns_advancements == [-1, -1, 4, 5, -1, 3, 1, 1]
+    assert pawn_structure.pawns_advancements == [None, None, 4, 5, None, 3, 1,
+                                                 1]
 
     pawn_structure = PawnStructure(board, color=chess.BLACK)
-    assert pawn_structure.pawns_advancements == [-1, -1, -1, -1, -1, -1, -1, -1]
+    assert pawn_structure.pawns_advancements == [None] * 8
 
     fen = "6k1/5pp1/Qp2p3/7q/8/P5PK/2Br3P/8 w - - 3 36"
     board = chess.Board(fen)
     pawn_structure = PawnStructure(board, color=chess.WHITE)
-    assert pawn_structure.pawns_advancements == [2, -1, -1, -1, -1, -1, 2, 1]
+    assert pawn_structure.pawns_advancements == [2, None, None, None, None,
+                                                 None, 2, 1]
 
     pawn_structure = PawnStructure(board, color=chess.BLACK)
-    assert pawn_structure.pawns_advancements == [-1, 5, -1, -1, 5, 6, 6, -1]
+    assert pawn_structure.pawns_advancements == [None, 5, None, None, 5, 6, 6,
+                                                 None]

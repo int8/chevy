@@ -780,3 +780,153 @@ def test_our_legal_moves_count():
     board = chess.Board(fen)
     board_features = BoardFeatures(board, color=chess.WHITE)
     assert board_features.legal_moves_count == 1
+
+
+def test_queens_threats():
+    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.queens_threats == [0] * 6
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.queens_threats == [0] * 6
+
+    fen = "r3k1r1/1pp4p/p2pbp1b/1B2pn2/PQ1q3n/P4N2/4PPPP/3R1RK1 w q - 0 16"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.queens_threats == [1, 0, 0, 1, 1, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.queens_threats == [1, 0, 0, 0, 1, 0]
+
+    fen = "2krr3/1p5p/pQ1pbp1b/1Bp1pn2/P5qn/P4N2/4PPPP/3R1RK1 w - - 0 16"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.queens_threats == [2, 1, 0, 0, 0, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.queens_threats == [4, 0, 0, 1, 0, 0]
+
+    fen = "2k1r1r1/1p5Q/p2pbp1b/2p1pn2/2B4n/PN6/2q1PPPP/3R1RK1 w - - 0 16"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.queens_threats == [1, 1, 1, 1, 0, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.queens_threats == [1, 1, 1, 1, 0, 0]
+
+
+def test_rooks_threats():
+    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.rooks_threats == [0] * 6
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.rooks_threats == [0] * 6
+
+    fen = "2k1r1r1/1p2B3/p2p1pQb/2pbpn2/7n/PN4P1/4P1PP/1q1R1RK1 w - - 0 16"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.rooks_threats == [0, 0, 1, 0, 1, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.rooks_threats == [0, 1, 1, 0, 1, 0]
+
+    fen = "2k5/1p6/p2p1p1b/B1p1p3/7n/rN1r1QP1/4P1PP/Rq1R1bK1 w - - 0 16"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.rooks_threats == [0, 2, 1, 2, 1, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.rooks_threats == [0, 0, 1, 2, 2, 0]
+
+
+def test_bishops_threats():
+    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.bishop_threats == [0] * 6
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.bishop_threats == [0] * 6
+
+    fen = "k6K/8/3r2p1/n4B2/1B4bR/p4NQR/2pq4/4b3 w - - 0 12"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.bishop_threats == [0, 1, 1, 1, 1, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.bishop_threats == [3, 1, 1, 1, 1, 0]
+
+    fen = "2k5/1p6/p2p1p1b/B1p1p3/7n/rN1r1QP1/4P1PP/Rq1R1bK1 w - - 0 16"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.bishop_threats == [2, 0, 0, 0, 0, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.bishop_threats == [0, 0, 0, 0, 0, 0]
+
+
+def test_pawns_threats():
+    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.pawn_threats == [0] * 6
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.pawn_threats == [0] * 6
+
+    fen = "2k5/1p6/p2p1p1b/B1p1p3/7n/rN1r1QP1/4P1PP/Rq1R1bK1 w - - 0 16"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.pawn_threats == [0, 0, 0, 0, 0, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.pawn_threats == [0, 1, 0, 1, 0, 0]
+
+    fen = "rnbqkbnr/pp3ppp/8/2ppp3/2PPP3/8/PP3PPP/RNBQKBNR w KQkq - 0 5"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.pawn_threats == [4, 0, 0, 0, 0, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.pawn_threats == [4, 0, 0, 0, 0, 0]
+
+    fen = "rnb1kb1r/pp3ppp/8/1qpppn2/1NPPPR2/8/PP3PPP/1NBQKB1R w Kkq - 0 19"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.pawn_threats == [4, 1, 0, 1, 0, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.pawn_threats == [4, 1, 0, 0, 1, 0]
+
+
+def test_knights_threats():
+    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.knights_threats == [0] * 6
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.knights_threats == [0] * 6
+
+    fen = "2k5/1p6/p2p1p1b/B1p1p3/7n/rN1r1QP1/4P1PP/Rq1R1bK1 w - - 0 16"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.knights_threats == [1, 0, 0, 0, 1, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.knights_threats == [1, 0, 0, 0, 0, 0]
+
+
+def test_king_threats():
+    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.king_threats == [0] * 6
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.king_threats == [0] * 6
+
+    fen = "1NkN4/1p6/p2p1p1b/B1p1p3/7n/r2r1QP1/4P1PP/Rq1R1bK1 w - - 0 16"
+    board = chess.Board(fen)
+    board_features = BoardFeatures(board, color=chess.BLACK)
+    assert board_features.king_threats == [0, 2, 0, 0, 0, 0]
+
+    board_features = BoardFeatures(board, color=chess.WHITE)
+    assert board_features.king_threats == [0, 0, 1, 0, 0, 0]
