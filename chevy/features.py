@@ -1,7 +1,7 @@
 from __future__ import annotations
 import operator
 from functools import cached_property
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 
 import chess
 import chess.pgn
@@ -20,6 +20,24 @@ class BoardFeaturesBase:
     def __init__(self, board: chess.Board, color: chess.Color = chess.WHITE):
         self.board = board
         self.color = color
+
+    @cached_property
+    def our_attacks_map(self) -> Dict[chess.PieceType, List[int]]:
+        attacks = dict(
+            zip(
+                chess.PIECE_TYPES,
+                [[0] * len(chess.PIECE_TYPES) for i, _ in
+                 enumerate(chess.PIECE_TYPES)]
+            )
+        )
+        for p in self._all_our_pieces_square_set:
+            for attacked_piece in self.board.attacks(p).intersection(
+                    self._all_their_pieces_square_set):
+                attacked_piece_idx = self.board.piece_at(
+                    attacked_piece).piece_type - 1
+                attacking_piece_idx = self.board.piece_at(p).piece_type
+                attacks[attacking_piece_idx][attacked_piece_idx] += 1
+        return attacks
 
     @cached_property
     def mobility_map(self) -> Dict[chess.Square, List[chess.Square]]:
@@ -112,6 +130,30 @@ class BoardFeaturesBase:
 
 
 class BoardFeatures(BoardFeaturesBase):
+
+    @cached_property
+    def queens_threats(self) -> List[int]:
+        return self.our_attacks_map[chess.QUEEN]
+
+    @cached_property
+    def knights_threats(self) -> List[int]:
+        return self.our_attacks_map[chess.KNIGHT]
+
+    @cached_property
+    def bishop_threats(self) -> List[int]:
+        return self.our_attacks_map[chess.BISHOP]
+
+    @cached_property
+    def rooks_threats(self) -> List[int]:
+        return self.our_attacks_map[chess.ROOK]
+
+    @cached_property
+    def pawn_threats(self) -> List[int]:
+        return self.our_attacks_map[chess.PAWN]
+
+    @cached_property
+    def king_threats(self) -> List[int]:
+        return self.our_attacks_map[chess.KING]
 
     @cached_property
     def fianchetto_queen(self) -> bool:
@@ -466,11 +508,14 @@ class PawnStructure(BoardFeaturesBase):
         )
 
     @cached_property
-    def pawns_advancements(self) -> List[int]:
-        files = [-1] * 8
+    def pawns_advancements(self) -> List[Optional[int]]:
+        files: List[Optional[int]] = [None] * 8
         for p in self.board.pieces(chess.PAWN, self.color):
             pawn_file = chess.square_file(p)
-            files[pawn_file] = max(files[pawn_file], p // 8)
+            if files[pawn_file] is not None:
+                files[pawn_file] = max(files[pawn_file], p // 8)
+            else:
+                files[pawn_file] = p // 8
         return files
 
     @cached_property
