@@ -167,6 +167,14 @@ def test_passed_pawns():
     pawn_structure = PawnStructure(board, color=chess.BLACK)
     assert pawn_structure.passed_pawns == 1
 
+    fen = "3qkbnr/3ppppp/pP4r1/4p3/6b1/4n3/2PPPPPP/RNBQKBNR w KQk - 0 13"
+    board = chess.Board(fen)
+    pawn_structure = PawnStructure(board, color=chess.WHITE)
+    assert pawn_structure.passed_pawns == 1
+
+    pawn_structure = PawnStructure(board, color=chess.BLACK)
+    assert pawn_structure.passed_pawns == 1
+
 
 def test_pawn_islands():
     # https://lichess.org/editor/5kr1/4pppp/4q3/8/2P5/1BQP4/1BP1P3/1RK5_w_-_-_0_19
@@ -224,5 +232,50 @@ def test_pawns_advancements():
                                                  None, 2, 1]
 
     pawn_structure = PawnStructure(board, color=chess.BLACK)
-    assert pawn_structure.pawns_advancements == [None, 5, None, None, 5, 6, 6,
+    assert pawn_structure.pawns_advancements == [None, 2, None, None, 2, 1, 1,
                                                  None]
+
+    fen = "6k1/5pp1/Qp2p3/P6q/1p6/P5PK/2Br3P/8 w - - 3 36"
+    board = chess.Board(fen)
+    pawn_structure = PawnStructure(board, color=chess.WHITE)
+    assert pawn_structure.pawns_advancements == [4, None, None, None, None,
+                                                 None, 2, 1]
+
+    pawn_structure = PawnStructure(board, color=chess.BLACK)
+    assert pawn_structure.pawns_advancements == [None, 4, None, None, 2, 1, 1,
+                                                 None]
+
+
+def test_passed_pawns_advancements():
+    # starting position
+    fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    board = chess.Board(fen)
+    pawn_structure = PawnStructure(board, color=chess.WHITE)
+    assert pawn_structure.passed_pawns_advancements == []
+
+    pawn_structure = PawnStructure(board, color=chess.BLACK)
+    assert pawn_structure.passed_pawns_advancements == []
+
+    fen = "r4rk1/2R4R/3P2B1/2Pb4/5P2/8/6PP/6K1 b - - 1 31"
+    board = chess.Board(fen)
+    pawn_structure = PawnStructure(board, color=chess.WHITE)
+    assert pawn_structure.passed_pawns_advancements == [5, 4, 3, 1, 1]
+
+    pawn_structure = PawnStructure(board, color=chess.BLACK)
+    assert pawn_structure.passed_pawns_advancements == []
+
+    fen = "6k1/5pp1/Q3p3/7q/8/P1p3PK/2Br3P/8 w - - 3 36"
+    board = chess.Board(fen)
+    pawn_structure = PawnStructure(board, color=chess.WHITE)
+    assert pawn_structure.passed_pawns_advancements == [2]
+
+    pawn_structure = PawnStructure(board, color=chess.BLACK)
+    assert pawn_structure.passed_pawns_advancements == [5, 2]
+
+    fen = "6k1/3p1q2/Qpp1p3/P7/1p6/P5PK/2Br3P/8 w - - 3 36"
+    board = chess.Board(fen)
+    pawn_structure = PawnStructure(board, color=chess.WHITE)
+    assert pawn_structure.passed_pawns_advancements == [2, 1]
+
+    pawn_structure = PawnStructure(board, color=chess.BLACK)
+    assert pawn_structure.passed_pawns_advancements == [2, 2, 1]

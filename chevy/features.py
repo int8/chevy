@@ -513,9 +513,10 @@ class PawnStructure(BoardFeaturesBase):
         for p in self.board.pieces(chess.PAWN, self.color):
             pawn_file = chess.square_file(p)
             if files[pawn_file] is not None:
-                files[pawn_file] = max(files[pawn_file], p // 8)
+                files[pawn_file] = max(files[pawn_file],
+                                       p // 8 if self.color else 7 - (p // 8))
             else:
-                files[pawn_file] = p // 8
+                files[pawn_file] = p // 8 if self.color else 7 - (p // 8)
         return files
 
     @cached_property
@@ -556,7 +557,7 @@ class PawnStructure(BoardFeaturesBase):
         return double_pawns
 
     @cached_property
-    def passed_pawns(self) -> int:
+    def _passed_pawns_set(self) -> chess.SquareSet:
         # always white perspective
         b = self.board
         if self.color == chess.BLACK:
@@ -573,11 +574,15 @@ class PawnStructure(BoardFeaturesBase):
 
         s = chess.SquareSet()
         for x, y in zip(*np.where(m == 1)):
-            if not (any(m[x:, y] == -1) or (
-                    y < 7 and any(m[x:, (y + 1)] == -1)) or (
-                            y > 0 and any(m[x:, (y - 1)] == -1))):
+            if not (any(m[(x + 1):, y] == -1) or (
+                    y < 7 and any(m[(x + 1):, (y + 1)] == -1)) or (
+                            y > 0 and any(m[(x + 1):, (y - 1)] == -1))):
                 s.add(x * 8 + y)
-        return len(s)
+        return s if self.color == chess.WHITE else s.mirror()
+
+    @cached_property
+    def passed_pawns(self) -> int:
+        return len(self._passed_pawns_set)
 
     @cached_property
     def pawn_islands(self) -> int:
@@ -587,3 +592,11 @@ class PawnStructure(BoardFeaturesBase):
             m[x][y] = 1
         _, c = label(m, structure=[[1, 1, 1], [1, 1, 1], [1, 1, 1]])
         return c
+
+    @cached_property
+    def passed_pawns_advancements(self):
+        advancements = []
+        for p in self._passed_pawns_set:
+            advancements.append(
+                p // 8 if self.color == chess.WHITE else 7 - p // 8)
+        return sorted(advancements, reverse=True)
