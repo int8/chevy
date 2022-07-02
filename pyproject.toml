@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "chevy"
-version = "0.2.0"
+version = "0.2.1"
 description = "Chess position Evaluation via hand-crafted features"
 authors = ["int8"]
 readme = "README.md"
