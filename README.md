@@ -1,4 +1,4 @@
-## Simple framework turning fen into set of hand-crafted chess position features 
+## Simple tool turning fen into set of hand-crafted chess position features 
 
 ### Installation
 
